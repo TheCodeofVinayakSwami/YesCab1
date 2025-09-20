@@ -21,25 +21,22 @@
 <body>
 
   <header>
-    Yes Cab Service - Navratri Temple Tour Booking
-    <button id="adminBtn" style="position:absolute; top:20px; right:30px; background:#2522c2; color:white; border:none; padding:8px 18px; border-radius:5px; cursor:pointer; font-size:1rem;">
-      Admin
-    </button>
+  <img src="img/logo.jpg" alt="Yes Cab Logo" style="height:40px; vertical-align:middle; margin-right:12px;">
+  Yes Cab Service - Navratri Temple Tour Booking
+  <button id="adminBtn" style="position:absolute; top:20px; right:30px; background:#2522c2; color:white; border:none; padding:12px 24px; border-radius:10px; cursor:pointer; font-size:1rem;">
+    Admin
+  </button>
   </header>
 
   <section>
-    <h2> 9 Kolhapur Durga Temples</h2>
-    <div class="gallery">
-      <img src="img/mahalaxami-temple.jpg" alt="Mahalaxmi Temple">
-      <img src="https://via.placeholder.com/300x200?text=Temple+2" alt="Temple 2">
-      <img src="https://via.placeholder.com/300x200?text=Temple+3" alt="Temple 3">
-      <img src="https://via.placeholder.com/300x200?text=Temple+4" alt="Temple 4">
-      <img src="https://via.placeholder.com/300x200?text=Temple+5" alt="Temple 5">
-      <img src="https://via.placeholder.com/300x200?text=Temple+6" alt="Temple 6">
-      <img src="https://via.placeholder.com/300x200?text=Temple+7" alt="Temple 7">
-      <img src="https://via.placeholder.com/300x200?text=Temple+8" alt="Temple 8">
-      <img src="https://via.placeholder.com/300x200?text=Temple+9" alt="Temple 9">
+  <h2>Kolhapur Durga Temples</h2>
+  <div style="display: flex; flex-wrap: wrap; gap: 50px; justify-content: center; margin-bottom: 30px;">
+    <div style="text-align:center;">
+      <img src="img/kolhapur-temple.webp" alt="Mahalaxmi Temple" style="width:500px; height:240px; object-fit:cover; border-radius:12px;">
+      <div style="margin-top:8px;">महालक्ष्मी देवी</div>
     </div>
+   
+  </div>
   </section>
 
   <section class="info">
@@ -70,6 +67,10 @@
   <section>
     <h2>📋 Booking Form</h2>
     <form id="bookingForm">
+      
+      <label for="date">Booking Date:</label>
+      <input type="date" id="date" name="date" required min="2025-09-21" max="2025-09-30" />
+
       <label for="name">Full Name:</label>
       <input type="text" id="name" name="name" required />
 
@@ -100,6 +101,7 @@
   const amountInput = document.getElementById('amount');
   const nameInput = document.getElementById('name');
   const mobileInput = document.getElementById('mobile');
+  const dateInput = document.getElementById('date');
   const bookingForm = document.getElementById('bookingForm');
   const submitBtn = bookingForm.querySelector('button[type="submit"]');
 
@@ -113,18 +115,20 @@
   nameInput.addEventListener('input', validateForm);
   mobileInput.addEventListener('input', validateForm);
   seatsInput.addEventListener('input', validateForm);
+  dateInput.addEventListener('input', validateForm);
 
   function validateForm() {
     const name = nameInput.value.trim();
     const mobile = mobileInput.value.trim();
     const seats = seatsInput.value.trim();
     const amount = amountInput.value.trim();
+    const date = dateInput.value.trim();
 
     // Mobile number validation: 10 digits only, must start with 6-9
     const mobileValid = /^[6-9]\d{9}$/.test(mobile);
 
     // All fields must be filled and mobile must be valid
-    if (name && mobileValid && seats && amount) {
+    if (name && mobileValid && seats && amount && date) {
       submitBtn.disabled = false;
       mobileInput.style.borderColor = '';
     } else {
@@ -147,10 +151,11 @@
     const mobile = mobileInput.value;
     const seats = seatsInput.value;
     const amount = amountInput.value;
+    const date = dateInput.value;
 
     // Save booking info to localStorage
     let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
-    bookings.push({ name, mobile, seats, amount });
+    bookings.push({ name, mobile, seats, amount, date });
     localStorage.setItem("bookings", JSON.stringify(bookings));
     // Optionally redirect or show success message here
   });
