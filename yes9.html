@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yes Cab Service - Navratri Travel Booking</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+    header { background: #2522c2; color: white; text-align: center; padding: 1rem 0; font-size: 1.8rem; position:relative; }
+    section { padding: 1rem; max-width: 800px; margin: auto; }
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .gallery img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
+    h2 { color: #2522c2; }
+    label { display: block; margin-top: 10px; }
+    input[type="text"], input[type="number"] { width: 100%; padding: 8px; margin-top: 5px; }
+    input[readonly] { background: #e0e0e0; }
+    button { margin-top: 15px; padding: 10px 20px; background: #2522c2; color: white; border: none; cursor: pointer; }
+    .note, .info { background: #fff3cd; padding: 10px; border-left: 5px solid #e6ac00; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    Yes Cab Service - Navratri Temple Tour Booking
+    <button id="adminBtn" style="position:absolute; top:20px; right:30px; background:#2522c2; color:white; border:none; padding:8px 18px; border-radius:5px; cursor:pointer; font-size:1rem;">
+      Admin
+    </button>
+  </header>
+
+  <section>
+    <h2> 9 Kolhapur Durga Temples</h2>
+    <div class="gallery">
+      <img src="img/mahalaxami-temple.jpg" alt="Mahalaxmi Temple">
+      <img src="https://via.placeholder.com/300x200?text=Temple+2" alt="Temple 2">
+      <img src="https://via.placeholder.com/300x200?text=Temple+3" alt="Temple 3">
+      <img src="https://via.placeholder.com/300x200?text=Temple+4" alt="Temple 4">
+      <img src="https://via.placeholder.com/300x200?text=Temple+5" alt="Temple 5">
+      <img src="https://via.placeholder.com/300x200?text=Temple+6" alt="Temple 6">
+      <img src="https://via.placeholder.com/300x200?text=Temple+7" alt="Temple 7">
+      <img src="https://via.placeholder.com/300x200?text=Temple+8" alt="Temple 8">
+      <img src="https://via.placeholder.com/300x200?text=Temple+9" alt="Temple 9">
+    </div>
+  </section>
+
+  <section class="info">
+    <h2>ℹ️ Information</h2>
+    <p><strong></strong> Join our special Navratri tour to visit 9 sacred Durga temples in Kolhapur. Comfortable cab service, guided tour.</p>
+    <p><strong></strong> 1.एका गाडीत 6 सीट घेतल्या जातील</p>
+ <p><strong></strong>2.5 वर्षा वरील लहान मुलांना फुल्ल टीकेत आकारले जाईल </p> 
+<p><strong></strong>3. ट्रीप चि वेळ सकाळी 7 ते 4 असेल </p>
+<p><strong></strong>4. सकाळी Pickup च्या वेळेत सर्वानी तयार राहावे </p>
+<p><strong></strong>5. सर्वांना एकच Pickup point दिला जाईल</p>
+<p><strong></strong>6. एकदा Booking केल्यास cancel होणार ना</p>
+  </section>
+
+  <section class="note">
+    <h2>📝 Note</h2>
+<strong></strong>  Booking will be confirmed after payment. Please enter valid details.</p>
+<strong></strong>1 रेणुका देवी मंदीर   </p>
+<strong></strong>2 पद्मावती देवी मंदीर</p>
+ <strong></strong>3) फिरंगाई देवी मंदीर</p>
+<strong></strong>4) महाकाली देवी मंदीर</p>
+<strong></strong>5) अनुकामिनी देवी मंदीर </p>
+<strong></strong>6) कात्यायनी देवी मंदीर</p>
+<strong></strong>7) लक्ष्मी देवी मंदीर (कागल)</p>
+<strong></strong>४) टेंबलाई देवी मंदीर</p>
+<strong></strong>9) उजळाईवाडी देवी मंदीर</p>
+  </section>
+
+  <section>
+    <h2>📋 Booking Form</h2>
+    <form id="bookingForm">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="mobile">Mobile Number:</label>
+      <input type="text" id="mobile" name="mobile" required />
+
+      <label for="seats">Number of Seats:</label>
+      <input type="number" id="seats" name="seats" min="1" required />
+
+      <label for="amount">Amount (₹):</label>
+      <input type="text" id="amount" name="amount" readonly />
+
+      <!-- PhonePe QR Scanner Section -->
+      <div style="margin-top:20px; text-align:center;">
+        <p><strong>Scan to Pay with PhonePe</strong></p>
+        <br>
+        <img src="img/qr.jpg" alt="PhonePe QR Code" style="width:200px; border:1px solid #ccc; border-radius:8px;">
+        <p style="font-size:0.9rem; color:#2522c2;">Scan this QR code using your PhonePe app to complete the payment and send the screenshot to this number.</p>
+      </div>
+      <!-- End PhonePe QR Scanner Section -->
+
+      <button type="submit">Book Now</button>
+    </form>
+  </section>
+
+  <script>
+  const seatsInput = document.getElementById('seats');
+  const amountInput = document.getElementById('amount');
+  const nameInput = document.getElementById('name');
+  const mobileInput = document.getElementById('mobile');
+  const bookingForm = document.getElementById('bookingForm');
+  const submitBtn = bookingForm.querySelector('button[type="submit"]');
+
+  // Calculate amount
+  seatsInput.addEventListener('input', () => {
+    const seats = parseInt(seatsInput.value) || 0;
+    amountInput.value = seats * 600;
+    validateForm();
+  });
+
+  nameInput.addEventListener('input', validateForm);
+  mobileInput.addEventListener('input', validateForm);
+  seatsInput.addEventListener('input', validateForm);
+
+  function validateForm() {
+    const name = nameInput.value.trim();
+    const mobile = mobileInput.value.trim();
+    const seats = seatsInput.value.trim();
+    const amount = amountInput.value.trim();
+
+    // Mobile number validation: 10 digits only, must start with 6-9
+    const mobileValid = /^[6-9]\d{9}$/.test(mobile);
+
+    // All fields must be filled and mobile must be valid
+    if (name && mobileValid && seats && amount) {
+      submitBtn.disabled = false;
+      mobileInput.style.borderColor = '';
+    } else {
+      submitBtn.disabled = true;
+      // Highlight mobile field if invalid
+      mobileInput.style.borderColor = mobile && !mobileValid ? 'red' : '';
+    }
+  }
+
+  // Initial validation
+  validateForm();
+
+  bookingForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    // Final validation before submit
+    validateForm();
+    if (submitBtn.disabled) return;
+
+    const name = nameInput.value;
+    const mobile = mobileInput.value;
+    const seats = seatsInput.value;
+    const amount = amountInput.value;
+
+    // Save booking info to localStorage
+    let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+    bookings.push({ name, mobile, seats, amount });
+    localStorage.setItem("bookings", JSON.stringify(bookings));
+    // Optionally redirect or show success message here
+  });
+
+  // Admin button click handler
+  document.getElementById("adminBtn").onclick = function() {
+    window.location.href = "login.html";
+  };
+  </script> 
+</body></body>
+</html>

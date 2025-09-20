@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Booking Details</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; }
+    h2 { color: #2522c2; text-align: center; }
+    table { width: 80%; margin: 30px auto; border-collapse: collapse; background: #fff; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background: #2522c2; color: white; }
+  </style>
+</head>
+<body>
+  <h2>Your Booking Details</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Booking Date</th>
+        <th>User Name</th>
+        <th>Phone Number</th>
+        <th>No of Seat</th>
+        <th>Amount (₹)</th>
+      </tr>
+    </thead>
+    <tbody id="bookingTableBody">
+      <!-- Data rows will go here -->
+    </tbody>
+  </table>
+  <script>
+    // Load bookings from localStorage and display in table
+    const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+    const tbody = document.getElementById("bookingTableBody");
+    bookings.forEach(b => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${b.date || ""}</td><td>${b.name}</td><td>${b.mobile}</td><td>${b.seats}</td><td>${b.amount}</td>`;
+      tbody.appendChild(row);
+    });
+  </script>
+</body>
+</html>
