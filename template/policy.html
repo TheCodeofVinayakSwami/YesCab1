@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Yes Cab - Policies</title>
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+  <header>
+    <img src="static/img/logo.jpg" alt="Yes Cab Logo">
+    <div style="font-weight:700;font-size:1.2rem;line-height:1.1;text-align:center">
+      𝐘𝐄𝐒 𝐂𝐀𝐁 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒
+    </div>
+  </header>
+
+  <nav class="menu-bar">
+    <ul class="menu-list">
+      <li><a href="{{ url_for('index') }}"{% if request.path == '/' %} class="active"{% endif %}>Home</a></li>i>
+      <li><a href="{{ url_for('policy') }}"{% if request.path == '/policy' %} class="active"{% endif %}>Policy</a></li>
+      <li><a href="{{ url_for('car') }}"{% if request.path == '/car' %} class="active"{% endif %}>Cars</a></li>
+      <li><a href="{{ url_for('contact') }}"{% if request.path == '/contact' %} class="active"{% endif %}>Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="policy-section">
+      <h2>Our Policies</h2>
+
+      <div class="policy-card">
+        <h3>Cancellation Policy</h3>
+        <p>Customers may cancel their reservation up to 4 hours before the scheduled pickup time. 
+        A cancellation fee of 30% of the booking amount will be charged for cancellations made within 
+        24 hours of the pickup time. No refunds will be issued for no-shows or same-day cancellations.</p>
+      </div>
+
+      <div class="policy-card">
+        <h3>Luggage Policy</h3>
+        <p>Each passenger is allowed up to one standard-sized carry‑on bag. </p>
+      </div>
+
+      <div class="policy-card">
+        <h3>Child Policy</h3>
+        <p>Children under the age of 5 must travel with an appropriate child seat, which can be 
+        requested at the time of booking at no extra cost. Children older than 5 but under 12 
+        should use a booster seat. Parents/guardians are responsible for securing their children safely.</p>
+      </div>
+
+      
+    </div>
+  </main>
+
+  <!-- Footer Start -->
+  <div class="container-fluid footer">
+    <div class="container">
+      <div class="row">
+        <div class="col col-md-6 col-xl-3">
+          <div class="footer-item">
+            <h4>About Us</h4>
+            <p class="mb-3">Yes Cab Services - local tour and cab booking service. Provide reliable sharing, airport and one-way cabs.</p>
+          </div>
+        </div>
+        <div class="col col-md-6 col-xl-3">
+          <div class="footer-item">
+            <h4>Quick Links</h4>
+            <a href="#">→ Tourism</a>
+            <a href="#">→ Booking</a>
+            <a href="#">→ Contact us</a>
+            <a href="#">→ Terms & Conditions</a>
+          </div>
+        </div>
+        <div class="col col-md-6 col-xl-3">
+          <div class="footer-item">
+            <h4>Business Hours</h4>
+            <div>
+              <h6 style="color:#fff;opacity:.9;margin:0">Monday to Sunday</h6>
+              <p style="margin:6px 0 0">09.00 am to 07.00 pm</p>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-6 col-xl-3">
+          <div class="footer-item">
+            <h4>Contact Info</h4>
+            <a href="#">📍 Behind old Addhar Hospital Manglawar Peth Kolhapur</a>
+            <a href="mailto:yescabservice@gmail.com">✉ yescabservice@gmail.com</a>
+            <a href="tel:+919956530909">📞 9956530909</a>
+            <div class="d-flex">
+              <a class="btn-circle" href="#"><span>f</span></a>
+              <a class="btn-circle" href="#"><span>w</span></a>
+              <a class="btn-circle" href="#"><span>i</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer End -->
+
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</body>
+</html>

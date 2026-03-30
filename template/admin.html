@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin - Bookings</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;background:#f4f6fb}
+    header{background:#1916b6;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
+    main{max-width:1200px;margin:20px auto;padding:0 16px}
+    .section{margin:18px 0}
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;margin-top:10px}
+    th,td{padding:8px 10px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
+    th{background:#f0f3ff;color:#111}
+    .controls a, .controls button{margin-left:8px}
+    .section-title{display:flex;justify-content:space-between;align-items:center}
+    .section-title h3{margin:0}
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>Yes Cab — Admin</strong></div>
+    <div class="controls">
+      <a href="{{ url_for('index') }}" style="color:#111;background:#ffb347;padding:8px 12px;border-radius:6px;text-decoration:none">Back to Site</a>
+      <button id="exportCsvBtn" style="padding:8px 12px;border-radius:6px;border:0;cursor:pointer">Export CSV</button>
+      <button id="deleteSelectedBtn" style="padding:8px 12px;border-radius:6px;border:0;cursor:pointer;background:#d9534f;color:#fff;margin-left:8px">Delete Selected</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Daily Sharing Cab -->
+    <section class="section" id="dailySection">
+      <div class="section-title">
+        <h3>Daily Sharing Cab</h3>
+        <div><label><input id="selectAllDaily" type="checkbox"> Select all</label></div>
+      </div>
+
+      <table id="dailyTable">
+        <thead>
+          <tr>
+            <th></th><th>ID</th><th>From</th><th>From Point</th><th>To</th><th>To Point</th>
+            <th>Date</th><th>Time</th><th>Seats</th><th>Amount</th><th>Name</th><th>Phone</th><th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in bookings|selectattr("service_type","equalto","daily")|list %}
+          <tr data-id="{{ b.id }}">
+            <td><input class="row-select" type="checkbox" value="{{ b.id }}"></td>
+            <td>{{ b.id }}</td>
+            <td>{{ b.from_city or '-' }}</td>
+            <td>{{ b.from_point or '-' }}</td>
+            <td>{{ b.to_city or '-' }}</td>
+            <td>{{ b.to_point or '-' }}</td>
+            <td>{{ b.journey_date or '-' }}</td>
+            <td>{{ b.journey_time or '-' }}</td>
+            <td>{{ b.seats or '-' }}</td>
+            <td>{{ b.amount or '-' }}</td>
+            <td>{{ b.user_name or '-' }}</td>
+            <td>{{ b.user_phone or '-' }}</td>
+            <td>{{ b.created_at }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="13" style="text-align:center;padding:12px">No daily sharing bookings.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Airport Pickup / Drop -->
+    <section class="section" id="airportSection">
+      <div class="section-title">
+        <h3>Airport Pickup / Drop</h3>
+        <div><label><input id="selectAllAirport" type="checkbox"> Select all</label></div>
+      </div>
+
+      <table id="airportTable">
+        <thead>
+          <tr>
+            <th></th><th>ID</th><th>From</th><th>From Point</th><th>To</th><th>To Point</th>
+            <th>Date</th><th>Time</th><th>Pickup Time</th><th>Amount</th><th>Name</th><th>Phone</th><th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in bookings|selectattr("service_type","equalto","airport")|list %}
+          <tr data-id="{{ b.id }}">
+            <td><input class="row-select" type="checkbox" value="{{ b.id }}"></td>
+            <td>{{ b.id }}</td>
+            <td>{{ b.from_city or '-' }}</td>
+            <td>{{ b.from_point or '-' }}</td>
+            <td>{{ b.to_city or '-' }}</td>
+            <td>{{ b.to_point or '-' }}</td>
+            <td>{{ b.journey_date or '-' }}</td>
+            <td>{{ b.journey_time or '-' }}</td>
+            <td>{{ b.pickup_time or '-' }}</td>
+            <td>{{ b.amount or '-' }}</td>
+            <td>{{ b.user_name or '-' }}</td>
+            <td>{{ b.user_phone or '-' }}</td>
+            <td>{{ b.created_at }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="13" style="text-align:center;padding:12px">No airport bookings.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- One Way Cab -->
+    <section class="section" id="onewaySection">
+      <div class="section-title">
+        <h3>One Way Cab</h3>
+        <div><label><input id="selectAllOneway" type="checkbox"> Select all</label></div>
+      </div>
+
+      <table id="onewayTable">
+        <thead>
+          <tr>
+            <th></th><th>ID</th><th>From</th><th>From Point</th><th>To</th><th>To Point</th>
+            <th>Date</th><th>Time</th><th>Amount</th><th>Name</th><th>Phone</th><th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in bookings|selectattr("service_type","equalto","oneway")|list %}
+          <tr data-id="{{ b.id }}">
+            <td><input class="row-select" type="checkbox" value="{{ b.id }}"></td>
+            <td>{{ b.id }}</td>
+            <td>{{ b.from_city or '-' }}</td>
+            <td>{{ b.from_point or '-' }}</td>
+            <td>{{ b.to_city or '-' }}</td>
+            <td>{{ b.to_point or '-' }}</td>
+            <td>{{ b.journey_date or '-' }}</td>
+            <td>{{ b.journey_time or '-' }}</td>
+            <td>{{ b.amount or '-' }}</td>
+            <td>{{ b.user_name or '-' }}</td>
+            <td>{{ b.user_phone or '-' }}</td>
+            <td>{{ b.created_at }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="12" style="text-align:center;padding:12px">No one way bookings.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script>
+    // select-all handlers per section
+    document.getElementById('selectAllDaily')?.addEventListener('change', e => {
+      document.querySelectorAll('#dailyTable tbody input.row-select').forEach(cb => cb.checked = e.target.checked);
+    });
+    document.getElementById('selectAllAirport')?.addEventListener('change', e => {
+      document.querySelectorAll('#airportTable tbody input.row-select').forEach(cb => cb.checked = e.target.checked);
+    });
+    document.getElementById('selectAllOneway')?.addEventListener('change', e => {
+      document.querySelectorAll('#onewayTable tbody input.row-select').forEach(cb => cb.checked = e.target.checked);
+    });
+
+    // export CSV - exports all tables combined
+    document.getElementById('exportCsvBtn')?.addEventListener('click', function(){
+      const rows = Array.from(document.querySelectorAll('table#dailyTable tr, table#airportTable tr, table#onewayTable tr'));
+      if (!rows.length) { alert('No bookings'); return; }
+      const csv = rows.map(r => Array.from(r.querySelectorAll('th,td'))
+        .map(cell => '"' + cell.textContent.trim().replace(/"/g,'""') + '"')
+        .join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'bookings.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    // delete selected across all tables
+    document.getElementById('deleteSelectedBtn')?.addEventListener('click', async function(){
+      const checked = Array.from(document.querySelectorAll('input.row-select:checked')).map(i => Number(i.value));
+      if (!checked.length) { alert('Select at least one row'); return; }
+      if (!confirm('Delete selected bookings? This cannot be undone.')) return;
+      try {
+        const res = await fetch('/api/bookings', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ids: checked })
+        });
+        if (!res.ok) {
+          const j = await res.json().catch(()=>({error:res.status}));
+          return alert('Delete failed: ' + (j.error || res.status));
+        }
+        const j = await res.json();
+        // remove rows from DOM
+        checked.forEach(id => {
+          const tr = document.querySelector('tr[data-id="'+id+'"]');
+          if (tr) tr.remove();
+        });
+        alert('Deleted: ' + (j.deleted || checked.length));
+      } catch (err) {
+        alert('Network error: ' + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

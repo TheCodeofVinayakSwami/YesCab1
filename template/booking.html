@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Booking - Yes Cab</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* small inline styles for summary box */
+    .summary-box { max-width:900px;margin:24px auto;padding:18px;border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,0.06); }
+    .summary-row{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0}
+    .summary-col{flex:1 1 220px}
+    .summary-label{font-weight:600;color:#333;margin-bottom:4px;display:block}
+    .summary-value{color:#111}
+  </style>
+</head>
+<body>
+  <header>
+    <img src="static/img/logo.jpg" alt="Yes Cab Logo">
+    <div style="font-weight:700;font-size:1.2rem;line-height:1.1;text-align:center">
+      𝐘𝐄𝐒 𝐂𝐀𝐁 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒
+    </div>
+  </header>
+
+  <nav class="menu-bar">
+    <ul class="menu-list">
+      <li><a href="{{ url_for('index') }}"{% if request.path == '/' %} class="active"{% endif %}>Home</a></li>i>
+      <li><a href="{{ url_for('policy') }}"{% if request.path == '/policy' %} class="active"{% endif %}>Policy</a></li>
+      <li><a href="{{ url_for('car') }}"{% if request.path == '/car' %} class="active"{% endif %}>Cars</a></li>
+      <li><a href="{{ url_for('contact') }}"{% if request.path == '/contact' %} class="active"{% endif %}>Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- Rules Modal -->
+  <div id="modalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998"></div>
+  <div id="rulesModal" style="display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;z-index:9999;max-width:600px;width:90%;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.3);padding:18px">
+    <h3 style="margin-top:0">Booking Rules</h3>
+    <div style="max-height:320px;overflow:auto;margin-bottom:16px">
+      <ul>
+        <li>Please arrive at the pickup point 10 minutes before departure.</li>
+        <li>Driver details and vehicle will be shared before the trip.</li>
+        <li>Cancellations may attract charges as per policy.</li>
+        <li>Carry a valid ID proof during the journey.</li>
+        <li>Follow COVID-19 and safety guidelines.</li>
+      </ul>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button id="modalCancel" style="padding:8px 14px;border-radius:6px;border:1px solid #ccc;background:#fff">Cancel</button>
+      <button id="modalOk" style="padding:8px 14px;border-radius:6px;border:0;background:#007bff;color:#fff">OK</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="summary-box" id="bookingSummary">
+      <h3 style="margin:0 0 12px">Booking Summary</h3>
+      <div id="noData" style="color:#a00">No booking data passed. Go back and select a service.</div>
+
+      <div id="summaryFields" style="display:none">
+        <div class="summary-row">
+          <div class="summary-col">
+            <span class="summary-label">Service</span>
+            <div id="s_service" class="summary-value"></div>
+          </div>
+          <div class="summary-col">
+            <span class="summary-label">Amount</span>
+            <div id="s_amount" class="summary-value"></div>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <div class="summary-col">
+            <span class="summary-label">From City</span>
+            <div id="s_from" class="summary-value"></div>
+          </div>
+          <!-- NEW: From Point -->
+          <div class="summary-col">
+            <span class="summary-label">Pick Point</span>
+            <div id="s_from_point" class="summary-value"></div>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <div class="summary-col">
+            <span class="summary-label">To City</span>
+            <div id="s_to" class="summary-value"></div>
+          </div>
+          <!-- NEW: To Point -->
+          <div class="summary-col">
+            <span class="summary-label">Drop Point</span>
+            <div id="s_to_point" class="summary-value"></div>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <div class="summary-col">
+            <span class="summary-label">Journey Date</span>
+            <div id="s_date" class="summary-value"></div>
+          </div>
+          <div class="summary-col">
+            <span class="summary-label">Journey Time</span>
+            <div id="s_time" class="summary-value"></div>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <div class="summary-col">
+            <span class="summary-label">Seats</span>
+            <div id="s_seats" class="summary-value"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="bookingInfo" style="max-width:900px;margin:18px auto;padding:16px;background:#fff;border-radius:8px;">
+      <label>Name</label>
+      <input id="userName" type="text" class="form-control" required>
+      <label>Phone</label>
+      <input id="userPhone" type="tel" class="form-control" required>
+      <label>Email</label>
+      <input id="userEmail" type="email" class="form-control">
+      <div style="margin-top:12px">
+        <button id="confirmBooking" type="button" class="btn">Continue to Booking</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    const params = new URLSearchParams(window.location.search);
+    const amount = params.get('amount');
+    if (amount !== null) {
+      const amtEl = document.getElementById('userAmount');
+      if (amtEl) {
+        // show with currency symbol if numeric
+        const num = Number(amount);
+        amtEl.value = isFinite(num) ? (num + ' ₹') : amount;
+      }
+    }
+
+    // optionally prefill other fields that were passed
+    const from = params.get('from');
+    if (from) {
+      const fromEl = document.getElementById('fromCity') || document.querySelector('input[name="from"]');
+      if (fromEl) fromEl.value = from;
+    }
+    const to = params.get('to');
+    if (to) {
+      const toEl = document.getElementById('toCity') || document.querySelector('input[name="to"]');
+      if (toEl) toEl.value = to;
+    }
+    const date = params.get('date');
+    if (date) {
+      const dateEl = document.querySelector('input[type="date"]');
+      if (dateEl) dateEl.value = date;
+    }
+    const time = params.get('time');
+    if (time) {
+      const timeEl = document.getElementById('journeyTime') || document.querySelector('select[name="time"]');
+      if (timeEl) timeEl.value = time;
+    }
+  });
+ 
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.toString()) return;
+
+    const service = params.get('service') || '';
+    const amount = params.get('amount') ? (params.get('amount') + ' ₹') : '';
+    const from = params.get('from') || '';
+    const fromPoint = params.get('from_point') || '';  // NEW
+    const to = params.get('to') || '';
+    const toPoint = params.get('to_point') || '';  // NEW
+    const date = params.get('date') || '';
+    const time = params.get('time') || '';
+    const seats = params.get('seats') || '';
+
+    // Populate summary based on service type
+    document.getElementById('s_service').textContent = (service || '').replace(/^\w/, c => c.toUpperCase());
+    document.getElementById('s_amount').textContent = amount || '-';
+    document.getElementById('s_from').textContent = from || '-';
+    document.getElementById('s_from_point').textContent = fromPoint || '-';  // NEW
+    document.getElementById('s_to').textContent = to || '-';
+    document.getElementById('s_to_point').textContent = toPoint || '-';  // NEW
+    document.getElementById('s_date').textContent = date || '-';
+    document.getElementById('s_time').textContent = time || '-';
+    document.getElementById('s_seats').textContent = seats || '-';
+
+    // Show summary fields if service is valid
+    document.getElementById('noData').style.display = 'none';
+    document.getElementById('summaryFields').style.display = 'block';
+});
+  </script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    const params = new URLSearchParams(window.location.search);
+
+    // collect booking summary + user fields when Confirm pressed
+    document.getElementById('confirmBooking').addEventListener('click', async function(){
+      const booking = {
+        service_type: params.get('service') || 'daily',
+        service: params.get('service') || 'daily',
+        from: params.get('from') || '',
+        from_point: params.get('from_point') || '',
+        to: params.get('to') || '',
+        to_point: params.get('to_point') || '',
+        date: params.get('date') || '',
+        time: params.get('time') || '',
+        pickup_time: params.get('pickup_time') || '',
+        seats: params.get('seats') || '',
+        amount: params.get('amount') || '',            // rupees as string
+        user_name: document.getElementById('userName').value.trim(),
+        user_phone: document.getElementById('userPhone').value.trim(),
+        user_email: document.getElementById('userEmail').value.trim()
+      };
+
+      if (!booking.user_name || !booking.user_phone) { alert('Enter name and phone'); return; }
+      if (!booking.amount) { alert('Amount missing'); return; }
+
+      // 1) create razorpay order on server
+      const createRes = await fetch('/api/create_order', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify({ amount: booking.amount, currency: 'INR', booking })
+      });
+      if (!createRes.ok) {
+        const j = await createRes.json().catch(()=>({error:createRes.status}));
+        return alert('Order creation failed: ' + (j.error || createRes.status));
+      }
+      const { order } = await createRes.json();
+
+      // 2) open Razorpay Checkout
+      const options = {
+        key: "{{ RZP_KEY_ID if False else '' }}", // replace with RZP_KEY_ID via template OR fetch from server if needed
+        amount: order.amount, // in paise
+        currency: order.currency,
+        name: 'Yes Cab',
+        description: booking.service_type + ' booking',
+        order_id: order.id,
+        handler: async function (response) {
+          // response contains razorpay_payment_id, razorpay_order_id, razorpay_signature
+          const verifyRes = await fetch('/api/verify_payment', {
+            method: 'POST',
+            headers: { 'Content-Type':'application/json' },
+            body: JSON.stringify({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+              booking: booking
+            })
+          });
+          if (!verifyRes.ok) {
+            const j = await verifyRes.json().catch(()=>({error:verifyRes.status}));
+            alert('Payment verification failed: ' + (j.error || verifyRes.status));
+            return;
+          }
+          const jr = await verifyRes.json();
+          alert('Payment successful. Booking saved. ID: ' + jr.id);
+          window.location.href = '/admin';
+        },
+        prefill: {
+          name: booking.user_name,
+          email: booking.user_email,
+          contact: booking.user_phone
+        },
+        theme: { color: "#1916b6" }
+      };
+
+      // IMPORTANT: provide key_id to client. Option A: render key into template from server.
+      // If using Jinja: replace options.key value with "{{ RZP_KEY_ID }}".
+      // Here we'll fetch key id from server to avoid exposing via JS hardcode:
+      // But simplest: server-side render booking.html with RZP_KEY_ID and use it in template.
+      // For now assume server renders RZP_KEY_ID into page variable rzpKey:
+      if (typeof options.key === 'string' && !options.key) {
+        // fetch key from server endpoint (create an endpoint /config to return key id)
+        try {
+          const kres = await fetch('/api/config');
+          if (kres.ok) {
+            const jk = await kres.json();
+            options.key = jk.rzp_key_id;
+          }
+        } catch (e) { /* ignore */ }
+      }
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    });
+  });
+  </script>
+
+  <!-- keep other scripts / footer -->
+</body>
+</html>
+

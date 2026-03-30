@@ -1,0 +1,119 @@
+/* existing styles (keep) */
+    :root{--primary:#1916b6;--accent:#bb2c08;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f9f9f9;color:#222}
+    header{background:var(--accent);color:#fff;padding:0.8rem;display:flex;align-items:center;justify-content:center;gap:20px}
+    header img{height:80px}
+    
+    /* menu bar styles */
+    .menu-bar{background:var(--primary);padding:0}
+    .menu-list{list-style:none;margin:0;padding:0;display:flex;justify-content:center;gap:0}
+    .menu-list li{flex:1;max-width:200px;text-align:center}
+    .menu-list li a{display:block;color:#fff;padding:14px 20px;text-decoration:none;font-weight:500;transition:background 0.3s ease}
+    .menu-list li a:hover{background:rgba(0,0,0,0.2)}
+    
+    main{min-height:60vh}
+
+    /* carousel / booking card */
+    .carousel-wrapper{position:relative}
+    .carousel-inner img{
+      width: 100%;
+      height: 440px;        /* fixed display height for desktop */
+      max-height: 60vh;     /* keep it responsive on very small screens */
+      object-fit: cover;    /* crop to fill without distortion */
+      display: block;
+      border-radius: 8px;
+    }
+
+    /* adjust booking card position when banner height changes */
+    .booking-card{
+      position: absolute;
+      top: 28px;            /* tweak vertical position if needed */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 92%;
+      max-width: 1000px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      padding: 24px;
+      z-index: 10;
+    }
+
+    .tabs{display:flex;gap:12px;justify-content:space-between}
+    .service-tab{flex:1;padding:10px;text-align:center;cursor:pointer;border-radius:8px}
+    .service-tab.active{background:linear-gradient(90deg,#eef3ff,#f6fbff);color:var(--primary);font-weight:700}
+    .forms-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+    .form-control,.form-select{padding:8px;border:1px solid #ccc;border-radius:6px;width:100%;box-sizing:border-box}
+    .col{flex:1;min-width:160px}
+    .col-3{flex:0 0 24%}
+    .btn{background:#f59f00;border:none;color:#fff;padding:10px 14px;border-radius:6px;cursor:pointer}
+
+    /* --- footer styles scoped to .footer to avoid colliding with .col used elsewhere --- */
+    .footer { background: var(--primary); color: #fff; padding: 3rem 1rem; margin-top: 40px; }
+    .footer .container { max-width: 1140px; margin: 0 auto; padding: 0 1rem; }
+    .footer .frow { display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start; }
+    .footer .footer-item a{display:block;color:#fff;opacity:.9;text-decoration:none;margin-bottom:8px}
+    .footer h4{margin:0 0 12px;font-size:1.1rem}
+    .footer p{color:#fff;opacity:.9}
+    .footer .btn-circle{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#444;color:#fff;text-decoration:none;margin-right:8px}
+    .footer .d-flex{display:flex;align-items:center;gap:8px;margin-top:8px}
+    footer{margin-top:24px}
+    @media(min-width:768px){ .col-md-6{flex:0 0 50%} .col-xl-3{flex:0 0 25%} }
+    @media(max-width:900px){ .col-3{flex:0 0 48%} .booking-card{padding:16px} header img{height:60px} .container-fluid{padding:2rem 0.5rem} }
+
+    /* modal styles */
+.modal-overlay{
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:9999;
+}
+.modal-box{
+  width:90%;max-width:520px;background:#fff;padding:20px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.2);position:relative;
+}
+.modal-close{position:absolute;right:12px;top:8px;border:0;background:transparent;font-size:22px;cursor:pointer}
+.modal-content p{margin:8px 0}
+.btn{background:#f59f00;border:none;color:#fff;padding:8px 14px;border-radius:6px;cursor:pointer}
+.btn-secondary{background:#666;color:#fff}
+
+/* Admin cards */
+.admin-cards{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.admin-card{flex:1 1 220px;background:#fff;border-radius:10px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,0.06);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;border:1px solid #eee}
+.admin-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,0.12);transition:all .18s}
+.admin-card.all{background:#f6f9ff}
+.card-title{font-weight:700;color:#111;margin-bottom:8px}
+.card-value{font-size:22px;color:#1916b6;font-weight:700}
+.card-action{margin-top:12px;color:#666;font-size:13px}
+
+/* bookings table */
+.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
+.admin-table th, .admin-table td{padding:10px 12px;border-bottom:1px solid #f0f0f0;text-align:left;font-size:14px}
+.admin-table th{background:#f8f9fb;color:#333;font-weight:700}
+@media(max-width:800px){ .admin-cards{flex-direction:column} .admin-card{flex:1 1 auto} }
+
+/* tourism section styles */
+.tourism {
+    background-color: #f8f9fa; /* Light background for contrast */
+}
+
+.tourism-item {
+    transition: transform 0.3s;
+}
+
+.tourism-item:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.tourism-img img {
+    height: 200px; /* Fixed height for uniformity */
+    object-fit: cover; /* Ensures images cover the area without distortion */
+}
+
+.tourism-content {
+    background-color: white; /* White background for content */
+    border-radius: 0 0 10px 10px; /* Rounded corners for the bottom */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Bootstrap primary color */
+    border: none; /* Remove border */
+}

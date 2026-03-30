@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Yes Cab - Contact</title>
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+  <header>
+    <img src="static/img/logo.jpg" alt="Yes Cab Logo">
+    <div style="font-weight:700;font-size:1.2rem;line-height:1.1;text-align:center">
+      𝐘𝐄𝐒 𝐂𝐀𝐁 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒
+    </div>
+  </header>
+
+  <nav class="menu-bar">
+    <ul class="menu-list">
+      <li><a href="{{ url_for('index') }}"{% if request.path == '/' %} class="active"{% endif %}>Home</a></li>
+      <li><a href="{{ url_for('policy') }}"{% if request.path == '/policy' %} class="active"{% endif %}>Policy</a></li>
+      <li><a href="{{ url_for('car') }}"{% if request.path == '/car' %} class="active"{% endif %}>Cars</a></li>
+      <li><a href="{{ url_for('contact') }}"{% if request.path == '/contact' %} class="active"{% endif %}>Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="policy-section">
+      <h2>Contact Us</h2>
+      <p>Phone: 9956530909 <br>Email: yescabservice@gmail.com</p>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</body>
+</html>

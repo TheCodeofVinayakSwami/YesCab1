@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yes Cab Service</title>
+  <link rel="stylesheet" href="static/css/style.css">
+   
+</head>
+<body>
+
+  <header>
+    <img src="static/img/logo.jpg" alt="Yes Cab Logo">
+    <div style="font-weight:700;font-size:1.2rem;line-height:1.1;text-align:center">
+      𝐘𝐄𝐒 𝐂𝐀𝐁 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒 
+    </div>
+  </header>
+
+  <nav class="menu-bar">
+    <ul class="menu-list">
+      <li><a href="{{ url_for('policy') }}">Policy</a></li>
+      <li><a href="{{ url_for('car') }}">Cars</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="carousel-wrapper">
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+          <img src="static/img/homeb.png" alt="Banner">
+          <div class="booking-card" id="bookingCard">
+            <div class="tabs">
+              <div class="service-tab active" data-tab="daily">Daily Sharing Cab</div>
+              <div class="service-tab" data-tab="airport">Airport Pickup / Drop</div>
+              <div class="service-tab" data-tab="oneway">One Way Cab</div>
+            </div>
+
+            <div id="bookingForms" style="margin-top:16px;">
+              <!-- Daily Sharing Cab Form -->
+              <form id="dailyForm" class="forms-row" autocomplete="off">
+                <div class="col col-3">
+                  <label>From :</label>
+                  <select class="form-select" id="fromCity" required>
+                    <option value="" selected disabled>Select From</option>
+                    <option value="Kolhapur">Kolhapur</option>
+                    <option value="Pune">Pune</option>
+                  </select>
+                </div>
+                
+                <!-- NEW: Sub-pick point (appears after selecting from city) -->
+                <div class="col col-3" id="fromPointDiv" style="display:none">
+                  <label>Pick Point :</label>
+                  <select class="form-select" id="fromPoint" required>
+                    <option value="" selected disabled>Select Pick Point</option>
+                  </select>
+                </div>
+
+                <div class="col col-3">
+                  <label>To :</label>
+                  <select class="form-select" id="toCity" required>
+                    <option value="" selected disabled>Select To</option>
+                    <option value="Kolhapur">Kolhapur</option>
+                    <option value="Pune">Pune</option>
+                  </select>
+                </div>
+                
+                <!-- NEW: Sub-drop point (appears after selecting to city) -->
+                <div class="col col-3" id="toPointDiv" style="display:none">
+                  <label>Drop Point :</label>
+                  <select class="form-select" id="toPoint" required>
+                    <option value="" selected disabled>Select Drop Point</option>
+                  </select>
+                </div>
+
+                <div class="col col-3">
+                  <label>Journey Date:</label>
+                  <input type="date" class="form-control daily-date" required>
+                </div>
+
+                <div class="col col-3">
+                  <label>Journey Time:</label>
+                  <select class="form-select" id="journeyTime" required>
+                    <option value="" selected disabled>Select Time</option>
+                  </select>
+                </div>
+
+                <div style="flex-basis:100%;height:0"></div>
+
+                <div class="col" style="max-width:400px">
+                  <label for="seats">Number of Seats</label>
+                  <select class="form-select" id="seats" required>
+                    <option value="" selected disabled>Select seats</option>
+                    <option value="1">1</option><option value="2">2</option><option value="4">4</option>
+                    <option value="5">5</option><option value="6">6</option><option value="7">7</option>
+                    <option value="8">8</option><option value="9">9</option><option value="10">10</option>
+                  </select>
+                </div>
+
+                <div class="col" style="max-width:200px">
+                  <label>Amount</label>
+                  <input type="text" class="form-control" id="amount" readonly>
+                </div>
+
+                <div style="display:flex;align-items:flex-end;gap:12px">
+                  <button type="button" class="btn goto-booking" data-service="daily">Book Now</button>
+                </div>
+              </form>
+
+              <!-- Airport Pickup / Drop Form -->
+              <form id="airportForm" class="forms-row" style="display:none" autocomplete="off">
+                <div class="col col-3">
+                  <label class="form-label mb-1">Type</label>
+                  <select class="form-select" id="airportType" required>
+                    <option value="Pickup from Airport">Pickup from Airport</option>
+                    <option value="Drop to Airport">Drop to Airport</option>
+                  </select>
+                </div>
+                <div class="col col-3">
+                  <label class="form-label mb-1">Pickup City:</label>
+                  <select class="form-select" id="airportPickup" required>
+                    <option value="Kolhapur">Kolhapur</option>
+        
+                  </select>
+                </div>
+                <div class="col col-3">
+                  <label class="form-label mb-1">Drop City:</label>
+                  <select class="form-select" id="airportDrop" required>
+                    <option value="Pune">Pune</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Belgav">Belgav</option>
+                     <option value="Bengaluru">Bengaluru</option>
+
+                  </select>
+                </div>
+                <div class="col col-3">
+                  <label class="form-label mb-1">Car Type:</label>
+                  <select class="form-select" id="airportCar" required>
+                    <option value="" selected>Select Car</option>
+                    <option value="Ertiga">Ertiga</option>
+                    <option value="Swift">Swift Dizier</option>
+                    <option value="Innova">Innova</option>
+                  </select>
+                </div>
+
+                <div style="flex-basis:100%;height:0"></div>
+
+                <div class="col" style="max-width:200px">
+                  <label class="form-label mb-1">Journey Date:</label>
+                  <input type="date" class="form-control airport-date" required>
+                </div>
+                <div class="col" style="max-width:200px">
+                  <label class="form-label mb-1">Journey Time:</label>
+                  <select class="form-select" required>
+                    <option value="06:00">06:00 AM</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="15:00">03:00 PM</option>
+                    <option value="18:00">06:00 PM</option>
+                  </select>
+                </div>
+                <div class="col" style="max-width:200px">
+                  <label class="form-label mb-1">Amount</label>
+                  <input type="text" class="form-control" id="airportAmount" readonly>
+                </div>
+                <div style="display:flex;align-items:flex-end">
+                  <button type="button" class="btn goto-booking" data-service="airport">Book Now</button>
+                </div>
+              </form>
+
+              <!-- One Way Cab Form -->
+              <form id="onewayForm" class="forms-row" style="display:none" autocomplete="off">
+                <div class="col col-3">
+                  <label class="form-label mb-1">From :</label>
+                  <select class="form-select" id="onewayFrom" required>
+                    <option value="Kolhapur">Kolhapur</option>
+                  </select>
+                </div>
+                <div class="col col-3">
+                  <label class="form-label mb-1">To :</label>
+                  <select class="form-select" id="onewayTo" required>
+                    <option value="Pune">Pune</option>
+                    <option value="Mumbai & Thane">Mumbai & Thane</option>
+                    <option value="Belgav">Belgav</option>
+                    <option value="Bengaluru">Bengaluru</option>
+                    <option value="Goa">Goa</option>
+                  </select>
+                </div>
+                <div class="col col-3">
+                  <label class="form-label mb-1">Car Type:</label>
+                  <select class="form-select" id="onewayCar" required>
+                    <option value="">Select Car</option>
+                    <option value="Ertiga">Ertiga</option>
+                    <option value="Innova">Innova</option>
+                    <option value="Swift">Swift Dizier</option>
+                  </select>
+                </div>
+                <div class="col col-3">
+                  <label class="form-label mb-1">Journey Date:</label>
+                  <input type="date" class="form-control oneway-date" required>
+                </div>
+
+                <div style="flex-basis:100%;height:0"></div>
+
+                <div class="col" style="max-width:200px">
+                  <label class="form-label mb-1">Journey Time:</label>
+                  <select class="form-select" required>
+                    <option value="" selected>Select Time</option>
+                    <option value="06:00">06:00 AM</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                  </select>
+                </div>
+                <div class="col" style="max-width:200px">
+                  <label class="form-label mb-1">Amount</label>
+                  <input type="text" class="form-control" id="onewayAmount" readonly>
+                </div>
+                <div style="display:flex;align-items:flex-end">
+                  <button type="button" class="btn goto-booking" data-service="oneway">Book Now</button>
+                </div>
+              </form>
+
+            </div> <!-- bookingForms -->
+          </div> <!-- booking-card -->
+        </div> <!-- carousel-item -->
+      </div> <!-- carousel-inner -->
+    </div> <!-- carousel-wrapper -->
+  </main>
+
+
+  <!-- Tourism Section Start -->
+  <div class="container-fluid tourism py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h1 class="display-5 text-capitalize mb-3">Tourism <span class="text-primary">Services</span></h1>
+            <p class="mb-0">Explore our curated tourism services for a memorable experience.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="tourism-item shadow-sm rounded">
+                    <div class="tourism-img">
+                        <img src="static/img/kolhapur.jpg" class="img-fluid rounded-top" alt="Kolhapur Darshan">
+                    </div>
+                    <div class="tourism-content rounded-bottom p-4">
+                        <h4 class="h5 mb-3">Kolhapur Darshan</h4>
+                        <p class="mb-3">Explore Kolhapur’s famous attractions like the Mahalakshmi Temple, Rankala Lake, and more with our comfortable and reliable cab service.</p>
+                        <a href="cars.html" class="btn btn-primary">Read More <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="tourism-item shadow-sm rounded">
+                    <div class="tourism-img">
+                        <img src="static/img/kokan.jpg" class="img-fluid rounded-top" alt="Kokan Tourism">
+                    </div>
+                    <div class="tourism-content rounded-bottom p-4">
+                        <h4 class="h5 mb-3">Kokan Tourism</h4>
+                        <p class="mb-3">Uncover the hidden gems of Kokan with our hassle-free cab service. Explore serene beaches, historic forts, and picturesque villages along Maharashtra’s coastline.</p>
+                        <a href="cars.html" class="btn btn-primary">Read More <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="tourism-item shadow-sm rounded">
+                    <div class="tourism-img">
+                        <img src="static/img/wp.jpg" class="img-fluid rounded-top" alt="Dev Darshan">
+                    </div>
+                    <div class="tourism-content rounded-bottom p-4">
+                        <h4 class="h5 mb-3">Dev Darshan</h4>
+                        <p class="mb-3">Experience the spiritual journey through various temples and holy places with our dedicated cab services.</p>
+                        <a href="about.html" class="btn btn-primary">Read More <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Tourism Section End -->
+         
+
+
+
+  <!-- Footer Start -->
+  <div class="container-fluid footer">
+    <div class="container">
+      <div class="row">
+        <div class="col col-md-6 col-xl-3">
+          <div class="footer-item">
+            <h4>About Us</h4>
+            <p class="mb-3">Yes Cab Services - local tour and cab booking service. Provide reliable sharing, airport and one-way cabs.</p>
+          </div>
+        </div>
+        <div class="col col-md-6 col-xl-3">
+          <div class="footer-item">
+            <h4>Quick Links</h4>
+            <a href="#">→ Tourism</a>
+            <a href="#">→ Booking</a>
+            <a href="#">→ Contact us</a>
+            <a href="#">→ Terms & Conditions</a>
+          </div>
+        </div>
+        <div class="col col-md-6 col-xl-3">
+          <div class="footer-item">
+            <h4>Business Hours</h4>
+            <div>
+              <h6 style="color:#fff;opacity:.9;margin:0">Monday to Sunday</h6>
+              <p style="margin:6px 0 0">09.00 am to 07.00 pm</p>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-6 col-xl-3">
+          <div class="footer-item">
+            <h4>Contact Info</h4>
+            <a href="#">📍 Behind old Addhar Hospital Manglawar Peth Kolhapur</a>
+            <a href="mailto:yescabservice@gmail.com">✉ yescabservice@gmail.com</a>
+            <a href="tel:+919956530909">📞 9956530909</a>
+            <div class="d-flex">
+              <a class="btn-circle" href="#"><span>f</span></a>
+              <a class="btn-circle" href="#"><span>w</span></a>
+              <a class="btn-circle" href="#"><span>i</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer End -->
+
+  <!-- load JS (Flask) -->
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const bookBtn = document.getElementById('goToBookingBtn');
+      if (bookBtn) {
+        bookBtn.addEventListener('click', function() {
+          window.location.href = "{{ url_for('booking') }}";
+        });
+      }
+    });
+  </script>
+</body>
+</html>

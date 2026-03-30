@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Admin Redirect</title>
+    <!-- Replace BACKEND_URL below with your Render backend URL (e.g. https://yescab-backend.onrender.com) -->
+    <meta http-equiv="refresh" content="0;url=BACKEND_URL/admin">
+    <style>body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:40px;text-align:center}</style>
+  </head>
+  <body>
+    <p>Redirecting to admin… If you are not redirected, <a id="link" href="BACKEND_URL/admin">click here</a>.</p>
+    <script>
+      // Fallback JS redirect if meta refresh is blocked
+      (function(){
+        var target = 'BACKEND_URL/admin';
+        if(location.href.indexOf('BACKEND_URL')===-1) location.replace(target);
+      })();
+    </script>
+  </body>
+</html>
