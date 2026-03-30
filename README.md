@@ -44,7 +44,6 @@ git push -u origin main
 ## Step 2: Set Up Render Web Service (Main Project)
 
 ### 2a. Create Web Service
-1. Go to [render.com/dashboard](https://render.com/dashboard)
 2. Click **+ New** → **Web Service**
 3. Select **Connect a repository** → search and connect `yescab-backend`
 4. Choose the `main` branch
